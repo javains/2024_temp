@@ -1,0 +1,192 @@
+# 작업디렉토리 지정 
+getwd()
+setwd("~/[009-1]_MAPTEST")
+getwd()
+
+
+
+
+
+
+# 위도, 경도 확인 ####
+# install.packages("ggmap")
+library(ggmap)
+
+# 특정지명 사용하여 위경도 정보 획득
+(gc <- geocode(enc2utf8("용인")))       # 주소가 정확하게 사용 하는것 이 바람직   
+(gc <- geocode(enc2utf8("제주대학교")))
+(gc <- geocode(enc2utf8("불국사")))
+
+# 도로명 주소 사용
+(gc <- geocode(enc2utf8("경북 경주시 불국로 385")))
+
+# 좌표가 다르게 나오는 경우 ?  값이 다르게 ? 소수점 3째여도 몇 m 차이 남 
+# 지번 주소 사용   구굴에서 도로명주소가 안되는 경우 ?
+(gc <- geocode(enc2utf8("세종특별자치시 남면 국세청로 8-14")))
+(gc <- geocode(enc2utf8("대전광역시 대덕구 법1동 282-1")))
+(gc <- geocode(enc2utf8("대전광역시 서구 둔산동 949")))
+(gc <- geocode(enc2utf8("경상북도 경주시 진현동 15")))
+
+# 불안정 ? 
+
+# 위경도 정보 숫자형으로 변환
+(cen <- as.numeric(gc))
+
+# roadmap 출력
+map <- get_googlemap(center = cen, 
+                     maptype = "roadmap", 
+                     markers = gc)
+ggmap(map)
+
+# satellite 출력
+map <- get_googlemap(center = cen, 
+                     maptype = "satellite", 
+                     markers = gc)
+ggmap(map)
+
+# terrain 출력
+map <- get_googlemap(center = cen, 
+                     maptype = "terrain", 
+                     markers = gc)
+ggmap(map)
+
+# hybrid 출력
+map <- get_googlemap(center = cen, 
+                     maptype = "hybrid", 
+                     markers = gc)
+ggmap(map)
+
+#지도 type은 4가지 
+
+# open map  움직이는 지도에 시각화  
+# 
+
+
+# 국세청 위치 출력 ####
+# install.packages("ggmap")
+# install.packages("stringr")
+library(ggmap)
+library(stringr)
+
+loc <- read.csv("data/국세청_위경도.csv", 
+                header = T)
+loc
+
+kd <- get_map("Geumnam-myeon, 
+              Sejong-si, 
+              Republic of Korea", 
+              zoom = 11, 
+              maptype = "roadmap")
+
+kor.map <- ggmap(kd) + 
+  geom_point(data = loc, 
+             aes(x = LON, y = LAT),
+             size = 5, 
+             alpha = 0.5, 
+             color = "red")
+
+kor.map + 
+  geom_text(data = loc,
+            aes(x = LON-0.001, 
+                y = LAT-0.008, 
+                label = 위치), 
+            size = 6)
+
+
+
+
+
+
+
+
+
+
+
+# 제주대학교 위치 출력 ####
+# install.packages("ggmap")
+# install.packages("stringr")
+library(ggmap)
+library(stringr)
+
+loc <- read.csv("data/제주대학교_위경도.csv", 
+                header = T)
+loc
+
+kd <- get_map("Jeju National Univ. Hospital, 
+              Jeju-si, 
+              Jeju-do, 
+              South Korea", 
+              zoom = 12, 
+              maptype = "roadmap")
+
+kor.map <- ggmap(kd) + 
+  geom_point(data = loc, 
+             aes(x = LON, y = LAT),
+             size = 5, 
+             alpha = 0.5, 
+             color = "red")
+
+kor.map + 
+  geom_text(data = loc,
+            aes(x = LON - 0.005, 
+                y = LAT - 0.005, 
+                label = 위치), 
+            size=6)
+
+
+
+
+
+
+
+
+
+
+# 지하철 3호선 경로출력 ####
+# install.packages("ggmap")
+# install.packages("stringr")
+library(ggplot2)
+library(ggmap)
+
+loc <- read.csv("data/3호선_위경도.csv", 
+                header = T)
+
+kor <- get_map("seodaemun-gu", 
+               zoom = 11, 
+               maptype = "roadmap")
+
+kor.map <- ggmap(kor) + 
+  geom_point(data = loc, 
+             aes(x = LON, y = LAT),
+             size = 2, 
+             alpha = 0.7, 
+             col = "red")
+
+kor.map + 
+  geom_path(data = loc,
+            aes(x = LON, y = LAT),
+            size = 1,
+            linetype = 2,
+            col = "blue") +
+  geom_text(data = loc, 
+            aes(x = LON, 
+                y = LAT + 0.005, 
+                label = 역명), 
+            size = 3)
+
+
+
+
+
+# 서울시 cctv
+# 어린이 보호구역 데이터 
+# 관심있는 내용을 data,go.kr에서 수집후 시각화 
+
+
+
+# 작업디렉토리 복원
+getwd()
+setwd("~")
+getwd()
+
+

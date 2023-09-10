@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<document>
+  <row>
+    <Model>Renault</Model>
+    <Price>24000</Price>
+  </row>
+  <row>
+    <Model>Picasso</Model>
+    <Price>17000</Price>
+  </row>
+  <row>
+    <Model>Peugeot</Model>
+    <Price>23000</Price>
+  </row>
+  <row>
+    <Model>Focus</Model>
+    <Price>15000</Price>
+  </row>
+  <row>
+    <Model>Fiesta</Model>
+    <Price>12000</Price>
+  </row>
+</document>

@@ -1,0 +1,1272 @@
+---
+title: '<a id=''Title''></a>빅데이터 분석 기초 : R을 중심으로'
+output:
+  word_document: default
+  html_document:
+    fig_caption: yes
+    fig_height: 6
+    fig_retina: 2
+    fig_width: 6
+    theme: readable
+    toc: yes
+    toc_depth: 2
+---
+
+```{r environment, echo=F}
+# knitr::opts_chunk$set(fig.align='center') # Doc format 일때 비활성화
+knitr::opts_chunk$set(warning=FALSE)
+```
+
+**************************
+
+* 필요 패키지 : `MASS`
+* 필요 데이터 : -  
+
+**************************
+
+
+# A. R 소개  
+  
+## A.1 R is...  
+  
+> R은 데이터 조작, 통계 계산, 시각화 등을 위한 프로그래밍 언어(혹은 환경)이다.   
+오픈 소스(open source)이고, 엄청난 양의 패키지와 최신 분석 기법을 제공하며, 모든 플랫폼에서 작동하는 특징 때문에, 최근 데이터 과학에서 공용어(*lingua franca*)로 자리잡아가고 있다.   
+  
+* Download at [http://www.r-project.org].  
+    <a href="http://www.r-project.org" target="_blank">  
+    <center>![R project](./Img/R-proj.PNG)</center></a>  
+      
+<br>  
+  
+* R is now the most popular tool...[http://www.r-bloggers.com/r-usage-skyrocketing-rexer-poll/]  
+<a href="http://www.r-bloggers.com/r-usage-skyrocketing-rexer-poll/" target="_blank">  
+<center>![R popular](./Img/R-pop.png)</center></a>  
+  
+<br>  
+  
+* Most users are satisfied with R...[http://www.r-bloggers.com/r-usage-skyrocketing-rexer-poll/]<a href="http://www.r-bloggers.com/r-usage-skyrocketing-rexer-poll/" target="_blank">  
+<center>![R satisfying](./Img/R-satg.png)</center></a>  
+  
+<br>  
+  
+## A.2 R-Studio  
+  
+> R을 여타 상용 프로그램처럼 편리하게 사용할 수 있는 사용자 인터페이스를 제공하는 프로그램으로 아래 사이트에서 무료로 다운로드 받아 사용할 수 있다.  
+  
+* Download at [https://www.rstudio.com/]   
+  
+<br>  
+  
+## A.3 R Markdown  
+  
+* **마크다운이란?**  
+    - 이 문서는 R-Studio을 이용해 마크다운(markdown)으로 작성되었음   
+    - 마크다운이란 일반 텍스트 문서를 편집할 때 쓰는 문법의 하나로서, 주로 README 파일이나 온라인 문서 등을 편집할 때 쓰임  
+    - 태그(tag)를 이용해 글자의 굵기를 조절하거나 문서 내에 이미지, 하이퍼링크, 수식 등을 삽입하는 것이 가능    
+    - 마크다운을 이용해 작성된 문서는 쉽게 HTML, pdf, MS-WORD 등 다른 문서 형태로 손쉽게 변환할 수 있음  
+    - R-Studio에서 작성 가능한 R 마크다운에 대한 자세한 내용은 [http://rmarkdown.rstudio.com]을 참고  
+  
+<br>  
+  
+## A.4 Console and script  
+  
+> A장에서는 일단 R-Studio를 사용하지 않는 것을 전제로 설명을 진행한다.   
+R 환경에서 익숙하게 R을 다룰 수 있다면 이후 R-Studio를 사용하게 되는 시점이 오더라도 아무 어려움없이 사용할 수 있을 것이다.  
+  
+* R을 실행하면 R-GUI 창이 뜸  
+  
+* R-GUI 창 내부에 **R console** 창이 있는데, 명령어 입력 및 결과물 출력이 이루어지는 공간임  
+<center>![R console](./Img/R-console.PNG)</center>  
+  
+<br>  
+  
+* R console 내 명령 프롬프트:   
+<center>![R prompt](./Img/R-prompt.PNG)</center>  
+  
+<br>  
+  
+* **R script**란 R 콘솔에 입력할 일련의 명령어 및 코드를 모은 텍스트 파일을 의미  
+<center>![R script](./Img/R-script.PNG)</center>  
+  
+<br>  
+  
+## A.5 Working directory  
+  
+> **작업 디렉토리(Working directory)**란 모든 파일 입출력의 기본 위치가 되는 디렉토리를 의미한다.  
+  
+* 현재 작업 디렉토리를 확인하려면 `getwd()` 함수를 콘솔에 입력하고, 특정 디렉토리를 작업 디렉토리로 지정하려면 `setwd()` 함수를 이용  
+
+    ```{r, eval=F}
+    getwd()
+    setwd("c:/mywork/codes/")    # 각자의 상황에 맞게 수정해 사용하시오
+    ```
+
+* 또는 메인 메뉴를 이용하는 것도 가능  
+<center>![Change dir](./Img/chg_wd.png)</center>  
+  
+<br>  
+  
+## A.6 도움말 Help  
+  
+> 도움말 시스템이 매우 편리하게 제공된다.   
+  
+* 예를 들어 `persp()`라는 이름의 함수에 대해 궁금하면 명령어 프롬프트에 다음과 같이 입력하면 됨    
+
+    ```{r eval=F}
+    ? persp 
+    ```
+
+    or
+
+    ```{r eval=F}
+    help(persp)
+    ```
+
+* 확장 도움말 기능을 제공. 예를 들어 "log"를 포함한 키워드 혹은 함수에 대해 궁금하면...  
+
+    ```{r eval=F}
+    ?? log
+    ```
+
+    or 
+
+    ```{r eval=F}
+    help.search("log")
+    ```
+
+* Online documentation: Visit R-project website and click on "Manuals".  
+<a href="http://www.r-project.org" target="_blank">  
+<center>![Online doc](./Img/online_help.png)</center></a>  
+  
+<br>  
+  
+## A.7 R command  
+  
+* 변수명은 알파벳, 숫자, 마침표(.), underscore(_) 등을 조합해 만듬  
+  
+* 변수에 특정 값(혹은 변수)을 할당할 때 ` <- `을 사용하면 됨. ` = `을 사용할 수도 있음   
+  
+* 모든 이름의 시작은 알파벳 또는 마침표(.)로  
+  
+    ```{r, eval=F}
+    abc <- 3       # OK
+    .jeong <- abc  # OK
+    2.res <- 3     # 에러...
+    ```
+
+* 여러 명령어를 한 줄에 입력할 때는 세미콜론(;)으로 구분
+
+    ```{r}
+    beta.0 <- 3; beta.1 <- 2 
+    ```
+
+* 주석문(comment)은 `#`을 이용
+
+    ```{r}
+    rnorm(10) # to generate 10 random numbers
+    ```
+
+* 키보드의 화살표 키($\uparrow$, $\downarrow$)를 이용하면 예전에 입력한 명령어를 탐색해 다시 불러올 수 있음 
+
+* 대소문자를 구별함 
+
+    ```{r}
+    a <- 1
+    A <- 2
+    a == A  
+    ```
+
+<br>
+
+## A.8 Mathematical computation
+
+* 산술연산
+
+    ```{r}
+    x <- 11; y <- 3
+    x+y
+    x-y
+    x*y
+    x/y
+    x^y  
+    x%/%y # integer quotient      
+    x%%y  # modulo
+    ```
+
+* 지수 표현 Numbers with exponents
+
+    ```{r}
+    1.2e3        # 1.2 * 1,000
+    1.2e-3       # 1.2 * 1/1,000
+    ```
+
+* 복소수 Complex numbers
+
+    ```{r}
+    z1 <- 1.2+3.4i 
+    z2 <- 4i
+    z1 + z2
+    ```
+
+* 수학 함수
+
+    ```{r}
+    x <- 10; y <- 3.21; n <- 2
+    log(x)
+    log10(x)
+    log(n, x)
+    exp(x)
+    sin(x) # cos(x), tan(x), asin(x), acos(x), atan(x)
+    abs(x)
+    sqrt(x)
+    floor(y)
+    ceiling(x)
+    round(y, digits=0)
+    gamma(x)
+    lgamma(x)
+    factorial(x)
+    choose(x, n)
+    ```
+
+<br>  
+  
+## A.9 Packages  
+  
+> 모든 R 함수 및 dataset은 패키지로 묶여서 저장되어 있다.   
+따라서 특정 함수 및 dataset은 해당 패키지를 load 해야 사용 가능하다.   
+  
+* 메모리 관리 및 검색 시 효율적임  
+  
+* 패키지 개발자들이 기존 패키지와 충돌 걱정 없이 개발 가능 & 확장성 $\uparrow$  
+  
+* 패키지 설치 및 업데이트는 인터넷을 통해 항상 가능   
+  
+* Standard (or base) package들은 R source code의 일부이기도 함  
+    - 기본적인 R 함수, 통계 및 데이터 분석을 위한 함수, 시각화 등을 위한 함수 등을 포함  
+    - R 설치 시 함께 설치되고 따로 load 할 필요 없음 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *c.f.*  Contributed packages  
+  
+<br>  
+  
+# B. R에서 자료 타입에 따른 data manipulation  
+  
+본 장에서는 데이터 타입에 따른 자료 생성 및 조작법의 기초를 익힌다.   
+  
+<br>  
+  
+## B.1 벡터(Vector)  
+  
+> 벡터를 구성하는 모든 성분은 같은 타입이어야 한다.   
+실수(double), 정수(integer), 문자열(string), 논리값(logical) 등으로 구성할 수 있다.  
+
+```{r}
+    x <- c(1, 2.5, 3.2)                    # double
+    y <- c(1L, 2L, 3L)                     # integer
+    z <- c("KTX", "Saemaul", "Mugunghwa")  # string
+    v <- c(TRUE, FALSE, FALSE, TRUE)       # logical
+```
+
+> 벡터의 각 성분은 위치에 따라 인덱싱한다.   
+R에서 인덱싱은 []를 이용한다.   
+여러 성분을 동시에 인덱싱해서 벡터의 일부를 추출해 부분 벡터를 만드는 것도 가능하다.  
+
+```{r}
+    x[3]             # x의 세 번째 성분 
+    x[c(1,3)]        # x의 첫 번째, 세 번째 성분을 추출한 부분 벡터 
+```
+
+> 벡터의 성분은 숫자로 된 인덱스 대신 이름을 가질 수 있다.
+
+```{r}
+    fruit <- c(5, 3, 2)
+    names(fruit) <- c("apple", "orange", "peach")
+    fruit
+    fruit[c("apple", "peach")]
+    fruit <- setNames(c(5, 3, 2), c("apple", "orange", "peach"))
+```
+
+- `names()` : 객체의 이름을 알아내거나 이름을 부여할 때 사용하는 함수  
+- `setNames()` : 객체의 이름을 부여할 때 편리한 함수  
+  
+> 벡터에 관련된 주요 기본 함수를 소개하면 다음과 같다.   
+
+```{r}
+    typeof(x)                              # double
+    is.double(x)                           # TRUE
+    as.double(y)                           # as.integer(x)
+    is.numeric(z)                          # FALSE
+    as.numeric(v)                          # 1 0 0 1
+    length(x)                              # length of x
+```
+
+- `typeof()` : 벡터를 구성하는 성분의 타입을 알려주는 함수
+- `is.double()` : 실수 타입인지 여부를 논리값으로 알려주는 함수
+- `as.double()` : 실수 벡터로 변환해주는 함수
+- `is.numeric()` : 수치 벡터인 지 여부를 논리값으로 알려주는 함수
+- `as.numeric()` : 수치 벡터로 변환해주는 함수
+- `length()` : 벡터의 길이를 계산해주는 함수
+
+> 새로운 벡터를 생성하려면 `c()` 함수를 이용한다.
+
+```{r}
+    a <- c(1, 2, 3)
+    b <- c(5, 6) 
+    x <- c(a, 4, b)                     # x <- c(1,2,3,4,5,6)
+```
+
+> 벡터 인덱스의 범위를 벗어나는 위치의 성분에 값을 할당하면 빈 자리는 결측치 처리를 한다. 
+즉, 위에서 생성한 길이가 3인 벡터 `a`에 대해 7번째 성분값에 2를 할당하면, 4, 5, 6번째 성분의 값은 결측치(결측치는 `NA`로 표시)로 채워진 길이가 7인 벡터가 생성된다.
+
+```{r}
+    a[7] <- 2                           # assign to the 7th element
+    a                                   # R extends the vector automatically
+```
+
+> `append()` 함수를 이용하면 기존 벡터에 새로운 값 추가해 새로운 벡터 만들 수 있다.
+
+```{r}
+    append(x, 99, after=3)    # x의 세 번째 성분 다음에 99 삽입
+    append(x, -99, after=0)   # x의 맨 앞에 -99 삽입
+```
+    
+>  `:` 연산자, `seq()` 함수, `rep()` 함수를 이용해 수열을 생성해 벡터를 만들 수 있다.
+
+```{r}
+    x <- seq(from=0, to=1, by=0.1)       # 0부터 1까지 0.1씩 증가하는 등차수열
+    y <- seq(from=0, to=1, length=11)    # 0부터 1까지 길이가 11인 등차수열
+    z <- 1:10                            # 1, 2, 3, ... , 9, 10
+    5:-5                                 # 5, 4, 3, ... , -4, -5
+    rep(1, 10)                           # repeat 1 ten times
+```
+
+- `m:n`: m부터 n까지 1씩 증가(감소)하는 수열 생성  
+- `seq()`: 등차수열 만들기  
+- `rep()`: 같은 값을 반복해서 수열 만들기  
+  
+> 벡터 간 산술연산은 성분별로 이루어진다.  
+
+```{r}
+    x <- 1:3; y <- c(2,2,2)
+    x+y
+    x-y
+    x*y
+    x/y
+    x^y
+```
+
+> 길이가 서로 다른 벡터 간에 연산을 실시하면 **재사용규칙**(recycling rule)이 적용된다.   
+즉, 길이가 짧은 벡터를 반복적으로 다시 사용해 길이가 긴 벡터와 같은 길이를 같도록 연장해 연산을 실시한다.   
+재사용 규칙이 적용되는 경우, R은 연산 결과와 함께 혹시 실수가 있었을 지 모르기 때문에 경고메세지를 함께 제공한다.  
+
+```{r}
+    z <- rep(2, 5)
+    x+z           # c(1, 2, 3, 1, 2) + c(2, 2, 2, 2, 2)와 같은 효과
+```
+
+- `z`는 길이가 5인 벡터인데, 길이가 3인 벡터 `x`와 덧셈연산을 실시하면 `x`의 길이가 5가 되도록 첫 두 성분을 재사용해 길이를 늘여 덧셈을 실시  
+  
+> 벡터와 스칼라 간의 연산은 재사용규칙의 원리에 따라 이해하면 쉽다.   
+즉, 스칼라 객체를 길이가 1인 벡터로 보고 재사용 규칙을 적용하면 된다.   
+즉, 위에서 생성한 벡터 `y`의 모든 성분에서 3을 뺴려면 다음과 같이하면 된다.   
+
+```{r}
+    y-3     
+```
+
+- `y-rep(3, length(y))`와 같은 효과  
+  
+> 논리값으로 구성된 논리값 벡터(logical vector)를 사용할 수 있다.   
+
+```{r}
+    x <- 1:10; y <- rep(5, 10)
+    z <- x<5        # less than
+    sum(z)
+    x<=5            # less than or equal to
+    x==5            # equal
+    x!=5            # not equal
+    (x>5)&(y<2)     # and
+    (x<5)|(y<2)     # or
+```
+    
+> R은 다양한 수학/통계 함수를 제공한다. 
+
+```{r}
+    x <- rnorm(10)
+    x
+    y <- 1:10
+    y
+    z <- -5:4
+    z
+```
+
+- `rnorm()`: 정규분포를 따르는 난수를 발생시켜주는 함수
+
+```{r}
+    max(x)      # 최대값
+    min(x)      # 최소값
+    sum(x)      # 모든 성분의 합
+    prod(x)     # 모든 성분의 곱
+    mean(x)     # 평균
+    median(x)   # 중앙값
+    range(x)    # 최대값과 최소값의 차이
+    quantile(x, probs=c(0.2, 0.7))      # 분위수
+    var(x)      # 분산
+    sd(x)       # 표준편차
+    cov(x, y)   # 공분산
+    cor(x, y)   # 상관계수
+    
+    x
+    sort(x)     # sort (or order) a vector or factor (partially) into ascending or descending order
+    rank(x)     # returns the sample ranks of the values in a vector
+    order(x)    # returns a permutation which rearranges its first argument into ascending or descending order
+    x[order(x)] # sort(x)와 같은 효과
+    cumsum(x)   # 누적합
+    cumprod(x)  # 누적곱
+    cummax(x)   # 누적최대값
+    cummin(x)   # 누적최소값
+    pmax(x, y, z)  # 성분별 최대값
+    pmin(x, y, z)  # 성분별 최소값
+```
+
+> 결측치는 `NA`로 표시한다.
+
+```{r}
+    x <- c(1, 2, 3, NA, 5)
+    is.na(x)
+```
+
+- `is.na()`: 결측치 여부를 논리값으로 알려주는 함수
+
+> 인덱스 벡터를 이용하면 주어진 벡터의 일부를 추출해 부분 벡터를 만들어 사용할 수 있다. 
+
+```{r}
+    x <- -10:10
+    x[3]          
+    x[1:3]
+    x[c(1,3,5)]
+    x[-1]
+    x[-c(1,3,5)]
+    y <- x[x<0]             # x에서 음수인 성분을 추출해 y에 할당
+    x[x<0] <- -x[x<0]       # 절대값 벡터  
+    x <- c(1, 2, 3, NA, 5)
+    x[!is.na(x)]
+    x[is.na(x)] <- 4        # 결측인 성분을 4로 채우기
+```
+
+- 인덱스에 `-`를 사용하면 해당성분을 제외하라는 의미임  
+  
+<br>  
+  
+## B.2 배열(arrays)과 행렬(matrices)  
+  
+> 배열 또는 행렬을 생성하는 가장 기본적인 방법은 벡터를 변형하는 것이다.   
+즉, 데이터를 일단 벡터 형태로 읽어서 배열 혹은 행렬 형태로 모양을 바꾼다.   
+`array()` 함수, `matrix()` 함수를 이용해 생성한다.  
+    
+```{r}
+    z <- array(1:20, dim=c(4,5))     # 벡터 1:20를 4*5 배열로 재배치  
+    z
+    z <- matrix(1:20, 4, 5)          
+    z
+    z <- matrix(2, 4, 5)
+    z
+    z <- matrix(c(1, 2, 3, 
+                  4, 5, 6),
+                nrow = 2, ncol = 3, byrow=T)  # Readability enhanced
+    z
+    z[2, 3]                     # indexed by the position
+```
+
+>  기존의 벡터(들) 또는 행렬(들)을 결합해 새로운 행렬을 만들 수 있다.
+
+```{r}
+    x <- 1:4
+    y <- 5:8
+
+    cbind(x, y)
+    rbind(x, y)
+
+    B <- matrix(0, 4, 5)
+    cbind(B, 1:4)
+
+    A <- matrix(1:20, 4, 5)
+    B <- matrix(1:20, 4, 5)
+    C <- cbind(A, B)
+    C
+```
+
+- `cbind()`: 열 방향으로 결합  
+- `rbind()`: 행 방향으로 결합  
+  
+> 행렬 간 산술연산은 벡터와 마찬가지로 성분별 연산이다. 즉, 같은 성분에 있는 값끼리 연산을 실시한다.  
+
+```{r}
+    A+B
+    A-B
+    A*B
+    A/B
+```
+
+- 두 행렬의 차원이 같지 않은 경우 벡터와 달리 재사용규칙이 적용되지 않고 에러메시지 발생
+
+```{r, eval=FALSE}
+    matrix(1:20, 4, 5) + matrix(1:10, 2, 5)   # Not run...
+```
+
+> 행렬 대수에서 사용하는 전치행렬, 행렬 곱, 역행렬, 단위행렬, 고유치(eigenvalue), 고유벡터(eigenvector), 외적(outer product) 등을 계산할 수 있다. 
+
+```{r}
+    A <- matrix(runif(20), 5, 4)
+    t(A)             # matrix transposition
+    B <- t(A)%*%A    # %*%: Matrix multiplication
+    solve(B)         # Inverse matrix
+    diag(5)          # 5-by-5 diagonal identity matrix 
+    diag(B)          # diagonal matrix with the diagonal elements of B 
+    C <- outer(1:3, 4:6, FUN="*")   # outer product
+```
+
+- `runif()`: uniform 난수 생성 함수  
+- 성분끼리의 곱이 아닌 행렬곱은 `%*%`를 사용해야 함에 특히 주의  
+- `solve(A, B)`는 원래 $Ax=B$ 형태의 연립방정식을 푸는 데 사용하는 함수임  
+  
+> 행렬의 각 행과 열에 이름을 부여해 사용하면 편리한 때가 있다.   
+`colnames()` 함수와 `rownames()`를 사용하면 된다.   
+
+```{r}
+    z <- matrix(1:20, 4, 5)
+    z
+    nrow(z)                              
+    colnames(z) <- c("alpha", "beta", "gamma", "delta", "eps")
+    rownames(z) <- c("a", "b", "c", "d")
+    z
+```
+
+- `nrow()`: 행의 개수를 계산하는 함수  
+- `ncol()`: 열의 개수를 계산하는 함수  
+  
+<br>  
+  
+## B.3 리스트(List)  
+  
+> 리스트(list)는 성분의 타입이 동일하지 않은 벡터로 `list()`를 이용해 생성한다.   
+R 식으로 표현하자면 리스트의 성분들은 서로 다른 모드(mode)를 가진다고 할 수 있다.   
+심지어 리스트 또는 데이터프레임같은 구조적 개체를 성분으로 가질 수 있어 재귀적(recursive) 자료구조를 갖게 할 수도 있다.    
+
+```{r} 
+    Hong <- list(kor.name="홍길동",
+                 eng.name="Gil-dong",
+                 age=43, 
+                 married=T, 
+                 no.child=2, 
+                 child.ages=c(13, 10))
+    Hong$age
+    Hong["age"]
+    Hong$child.age[2]
+    str(Hong)
+```
+
+- 리스트의 각 성분은 이름을 가질 수 있음: 위의 `kor.name`, `eng.name`, `age`, `married`, `no.child`, `child.age` 등.  
+- 리스트의 특정 성분을 가리키고 싶을 때에는 `$`를 사용함. ""를 이용해 성분 이름을 지정할 수도 있음  
+- `str()`: 객체의 자료구조를 간단히 요약해 보여주는 함수로서, 앞으로 매우 자주 사용하게 될 함수이므로 꼭 기억해두기 바람  
+  
+> 벡터와 마찬가지로 리스트의 각 성분에 대해 이름 대신 위치에 따라 인덱싱이 가능하다.   
+다만 인덱스를 표현할 때 `[[1]]`, `[[2]]`와 같이 이중으로 된 [ ]를 사용해야 한다는 점에 유의하면 된다.   
+즉 위에서 생성한 `Hong`의 두 번째 성분인 kor.name의 값을 가리키려면 `Hong[[2]]`과 같이 나타내면 된다.  
+
+```{r}
+    Hong[[2]]
+```
+
+> 인덱스 벡터를 이용하면 리스트 역시 부분 추출이 가능하다.   
+즉, `Hong[c(2,3)]` 는 `Hong`의 두 번째, 세 번째 성분을 추출하게 된다.   
+다만 이중으로 된 [ ]이 아니고 홑겹 [ ]을 사용함에 유의하자.   
+
+```{r}
+    Hong[c(1,2)]
+```
+
+> 리스트에 자주 사용되는 기본 함수에 대해 익혀보자.  
+`is.list()`는 객체가 리스트인 지 여부를 논리값으로 알려주는 함수이고, `lapply()`는 리스트의 각 성분에 대해 같은 함수를 반복적으로 적용한 값을 리턴하는 함수이다. 
+
+```{r}
+    is.list(Hong)
+    
+    x <- list(a = 1:10, 
+              beta = exp(-3:3),   
+              logic = c(TRUE,FALSE,FALSE,TRUE)) 
+    x
+    lapply(x, mean)                      # x의 각 성분의 평균값을 계산
+    lapply(x, quantile, probs = (1:3)/4) # x의 각 성분의 사분위수를 계산 
+```
+
+- `exp()`: 지수함수 $e^x$의 값을 계산   
+- `(1:3)/4`: (1/4, 2/4, 3/4)  
+  
+<br>  
+  
+## B.4 데이터프레임(Data frame)  
+  
+> 데이터프레임은 R에서 사용하는 데이터 저장 방식 중 가장 널리 사용되는 방식으로, 같은 길이의 벡터들을 성분으로 갖는 리스트라고 이해하면 된다.   
+따라서 2차원의 자료구조를 갖게 된다.   
+새로운 데이터프레임을 생성하려면 `data.frame()` 함수를 이용한다.  
+
+```{r}
+    x <- c(100, 75, 80)
+    y <- c("A302043", "A302044", "A302045")
+    z <- data.frame(score=x, ID=y)
+```
+
+> `data.frame()` 함수에서 `stringsAsFactors` 옵션을 이용해 문자열 벡터 성분의 성격을 factor로 지정할 수 있다.
+
+```{r}
+    dat.1 <- data.frame(x=1:3, y=c('a', 'b', 'c'))
+    str(dat.1)
+    dat.2 <- data.frame(x=1:3, y=c('a', 'b', 'c'), stringsAsFactors=F)
+    str(dat.2) 
+```
+
+- factor에 대한 자세한 소개는 다음 절에서 익힘  
+  
+> 다음은 데이터프레임에 자주 사용되는 기본 함수의 예이다.   
+특히 `class()` 함수는 객체지향(object oriented) 프로그래밍의 측면에서 객체의 클래스 정보를 알려주거나 지정할 수 있는 유용한 함수이니 기억해두자.  
+
+```{r}
+    typeof(dat.2)           # list
+    class(dat.2)            # data frame
+    is.data.frame(dat.2)    # TRUE
+```
+
+> 지정한 크기로 미리 할당해 초기화할 수 있다.   
+아래는 initial, dosage, blood, response라는 변수를 갖고 1,000,000건의 데이터를 저장할 수 있는 데이터프레임을 미리 할당해 초기화하기 위한 코드이다.  
+    
+```{r}
+    N <- 1000000
+    dat <- data.frame(initial=character(N),
+                      dosage=numeric(N),
+                      blood=factor(N, levels=c("O", "A", "B", "AB")),
+                      response=numeric(N) )
+```
+
+> 데이터프레임의 특정 열(column)을 선택하하려면 리스트와 같은 방법을 사용하면 된다.   
+다음은 R에 데이터프레임 형태로 내장된 데이터셋인 `faithful`의 각 성분을 추출하는 예이다.  
+
+```{r}
+    str(faithful)
+    faithful[[1]]
+    faithful$waiting
+```
+    
+> 데이터프레임의 일부 행(row)를 추출할 때는 `subset()` 함수를 사용한다.   
+함수 `subset()`의 옵션 `subset=`을 이용해 추출 조건을 지정하고, `select=` 옵션을 이용해 추출 대상 변수(열)을 지정할 수 있다.   
+다음은 MASS 패키지의 내장 데이터셋인 Cars93에서 데이터를 조건에 맞도록 추출하는 예이다.  
+
+```{r}
+    library(MASS)  # for dataset Car93
+    subset(Cars93, subset=(MPG.city > 32))
+    subset(Cars93, select=Model, subset=(MPG.city > 32))
+```
+    
+> 데이터프레임 내에 결측치가 포함된 경우, `na.omit()` 함수를 이용해 해당 행(row)을 골라내어 삭제할 수 있다.
+
+```{r}
+    x <- data.frame(a=1:5, b=c(1,2,NA,4,5))
+    cumsum(x)           # fails
+    cumsum(na.omit(x))
+```
+
+> 데이터프레임의 특정 열을 제외시킬 때는 `subset()` 함수의 `select=` 옵션에 `-`을 사용한다.
+
+```{r}
+    str(EuStockMarkets)
+    cor(EuStockMarkets)
+    cor(subset(EuStockMarkets, select=-SMI))  # SMI excluded
+    cor(subset(EuStockMarkets, select=-c(SMI, CAC)))  # SMI and CAC excluded
+```
+
+> 여러 개의 데이트프레임을 행방향 혹은 열방향으로 붙여 새로운 데이터프레임을 만드려면 `cbind()` 함수와 `rbind()` 함수를 이용한다.   
+이 때 붙일 데이터프레임들의 차원이 서로 잘 맞아야 한다.  
+
+```{r}
+    a <- data.frame(x=c(5, 10, 15), y=c("a", "b", "c"))
+    b <- data.frame(z=c(10, 20, 30))
+    cbind(a, b)
+    
+    a1 <- data.frame(x=c(20, 25, 30), y=c("d", "e", "f"))
+    rbind(a, a1)
+```
+
+> 지정한 변수를 기준으로 두 데이터프레임을 결합할 때는 `merge()` 함수를 이용한다.   
+결합 기준 변수는 `by=` 옵션에서 지정하는데, 변수명에 ""을 붙여야 함에 유의하자.  
+
+```{r}
+    a <- data.frame(Name=c("Mary", "Jane", "Alice", "Bianca"), score=c(90, 95, 100, 100))
+    b <- data.frame(Name=c("Jane", "Alice", "Ana"), weight=c(70, 55, 60))
+    merge(a, b, by="Name")
+    merge(a, b, by="Name", all=T)
+```
+
+> `with()` 함수를 이용하면 보다 간결한 코딩이 가능하다.   
+즉, 매번 데이터프레임의 이름을 타이핑할 필요없이 열(변수) 이름만을 사용해 코딩이 가능하도록 해 준다.  
+
+```{r}
+    z <- (Cars93$Price-mean(Cars93$Price))/sd(Cars93$Price)  # Cars93$... 지저분...
+    head(z)
+    z <- with(Cars93, (Price-mean(Price))/sd(Price))         # 깔끔...
+    head(z)
+```
+
+- `head()`: 데이터프레임의 처음 몇 개의 행을 화면에 출력해 내용을 확인할 수 있게 해 주는 함수  
+- `tail()`: 데이터프레임의 마지막 몇 개의 행을 화면에 출력해 내용을 확인할 수 있게 해 주는 함수  
+  
+<br>  
+  
+## B.5 Factor  
+  
+> R에서 사용하는 데이터 타입 중 요인(factor)은 문자형 변수로서 특정 수준값만을 가질 수 있는 데이터 타입을 의미한다.   
+예를 들어 ABO식 혈액형을 나타내는 변수를 문자형 변수를 정의할 때 이 변수가 취할 수 있는 값은 A, B, AB, O의 네 가지 값만을 가져야 할 것이고, 다른 종류의 문자가 들어오면 에러가 나야할 것이다.   
+이러한 종류의 데이터 타입을 요인형이라 한다. 요인형 벡터는 `factor()` 함수를 이용해 생성할 수 있다.   
+구체적 용법은 다음 코드를 살펴보면 쉽게 이해할 수 있다.  
+
+```{r}
+    blood.type <- factor(c("A", "A", "AB", "O", "O"), levels=c("A", "B", "AB", "O"))
+    table(blood.type)
+```
+
+- `table()` 함수: 도수분포표를 작성해주는 함수   
+  
+> 많은 경우 요인 타입임을 명시할 필요가 없다.   
+만일 특별히 요인형으로 지정하지 않은 문자열 벡터에 대해 요인형 자료를 위한 함수를 적용시키면(예: `table()`), R은 자동으로 데이터 타입을 요인형으로 바꾸어 처리한다.   
+
+```{r}
+    blood.type <- c("A", "B", "AB", "O", "O")
+    table(blood.type)
+```
+
+<br>  
+  
+## B.6 데이터 타입 변환하기   
+  
+> `as.numeric()`, `as.character()`와 같이 `as.`로 시작하는 함수를 이용하면 된다.  
+
+```{r}
+    x <- 1:3
+    y <- as.character(x)
+    y
+    as.numeric(y)
+```
+
+- `as.vector()`, `as.matrix()`, `as.list()`, `as.data.frame()`  
+  
+<br>  
+  
+## B.7 데이터 입맛대로 변형하기   
+  
+> 데이터셋을 여러 그룹으로 쪼개어서 새로운 데이터셋을 만드려면 `split()` 함수를 사용하면 된다.   
+아래는 `MASS` 패키지의 내장 데이터인 `Cars93`의 MPG.city 변수를 Origin 변수값(USA, non-USA)에 따라 두 개의 그룹으로 쪼개어 두 개의 성분을 갖는 리스트를 만드는 예이다.  
+
+```{r}
+    library(MASS)    # for the dataset Cars93
+    summary(Cars93)
+    tmp <- split(Cars93$MPG.city, Cars93$Origin)   # grouping by 'Origin'
+    str(tmp)                                       # List of 2
+```
+
+> 리스트 객체의 각 성분에 대해 지정한 함수를 적용해 얻은 결과를 새로운 리스크 혹은 벡터로 만드려면 `lapply()` 함수, `sapply()` 함수를 사용하면 된다.   
+`lapply`는 리스트를,  `sapply`는 벡터를 리턴해 준다.   
+다음은 5개의 성분을 갖는 리스트 `Jeong`에 `length()` 함수를 적용해 각 성분의 벡터 길이를 알려주는 예이다.   
+
+```{r}
+    Jeong <- list(first.name="Samuel", age=44, gender="M", n.child=2, child.gender=c("M", "F"))
+    lapply(Jeong, length)   # returns a list
+    sapply(Jeong, length)   # returns a vector
+```
+
+> 행렬 혹은 데이터프레임의 각 행과 열에 대해 같은 작업을 반복적으로 실행해 새로운 벡터를 생성하려면 `apply()` 함수를 이용한다.   
+`apply()`의 두 번째 입력값을 MARGIN이라 하는데, 이 값을 1로 지정하면 각 행에 대해, 2로 지정하면 각 열에 대해 반복 작업을 실행한다.   
+다음의 코드는 행렬 `a`에 대해 행 방향 평균과 열 방향 평균을 계산하는 예이다.  
+
+```{r}
+    a <- matrix(1:20, 4, 5)
+    a
+    apply(a, 1, mean)    # to every row
+    apply(a, 2, mean)    # to every column
+```
+
+> 주어진 데이터에 그룹별로 함수를 적용하려면 `tapply()` 함수를 사용한다.   
+다음 코드는 `Cars93` 데이터의 Price변수의 평균을 Origin별로 계산하는 예이다.   
+
+```{r}
+    with(Cars93, tapply(Price, Origin, mean)) # tapply(Cars93$Price, Cars93$Origin, mean) 과 같은 결과 
+```
+
+- `with()` 함수: 데이터프레임의 성분 이름만으로 깔끔하게 (지저분한 `$` 없이) 코딩을 가능하게 해 주는 매우 유용한 함수임.  
+  
+> 행 방향 그룹별로 함수를 적용하려면 `by()` 함수를 이용한다.   
+아래 코드는 Cars93의 Origin별로 `summary()` 함수를 적용한 예이다.   
+
+```{r}
+    by(Cars93, Cars93$Origin, summary)
+```
+    
+<br>  
+  
+## B.8 문자열과 날짜 변수   
+  
+> 문자열(string)의 길이를 알고 싶으면 `nchar()` 함수를 사용한다.   
+벡터의 길이(성분 개수)를 계산해주는 `length()`와 다른 함수이다.   
+아래 코드를 살펴보면 쉽게 이해할 수 있을 것이다.  
+
+```{r}
+    nchar("ABC")
+    length("ABC")
+    nchar(c("A", "B", "C"))
+    length(c("A", "B", "C"))
+```
+
+> 여러 개의 문자열을 붙여서 하나로 만드려면 `paste()` 함수를 이용한다.   
+붙일 때 사용할 구분자는 `sep=` 옵션에서 지정할 수 있다.  
+
+```{r}
+    paste("A", "B", "C")           # default separator: " "
+    paste("A", "B", "C", sep="")
+    paste("A", "B", "C", sep="/")
+```
+
+> 문자열의 일부를 추출하려면 `substr()` 함수를 사용한다.   
+`start=`, `stop=` 옵션으로 추출 시작 위치와 끝 위치를 지정할 수 있다.   
+
+```{r}
+    substr("12345678", start=5, stop=7)
+    
+    cities <- c("New York, NY", "Los Angeles, CA", "Peoria, IL") 
+    substr(cities, start=nchar(cities)-1, stop=nchar(cities))  # extract last two characters
+```
+    
+> 지정한 구분자를 기준으로 문자열을 쪼개려면 `strsplit()` 함수를 이용한다.   
+`strsplit()`는 쪼개진 부분 문자열을 각 성분으로 갖는 리스트 형태의 객체를 리턴한다.   
+다음은 문자열 `path`를 `/`를 기준으로 쪼개는 예이다.   
+
+```{r}
+    path <- "/home/data/test.csv"
+    strsplit(path, "/")
+```
+
+- 문자열 벡터에 이 함수를 적용한 예:
+
+```{r}
+    path <- c("/home/data/test1.csv", 
+              "/home/data/test2.csv",
+              "/home/data/test2.csv")
+    strsplit(path, "/")
+```
+    
+> 현재 날짜를 알고싶으면 `Sys.Date()` 함수를 이용한다.   
+이 함수가 리턴하는 값의 데이터 타입은 날짜형이다.  
+
+```{r}
+    Sys.Date()
+    class(Sys.Date())   # The class of the result from Sys.Date() is...
+```
+
+> 문자열을 날짜변수로 변환하려면 `as.Date()` 함수를 이용한다.   
+`as.Date()`는 기본적으로 문자열이 yyyy-mm-dd 형태임을 가정하고 변환을 시도한다.   
+다른 형태로 주어진 문자열을 날짜로 변환할 때는 `format=` 값을 지정해야 한다.   
+아래 예제를 살펴보면 쉽게 이해할 수 있을 것이다.  
+
+```{r}
+    as.Date("2015-10-09")   # standard format
+    as.Date("10/09/2015")   # error (not in a standard format)
+    as.Date("10/09/2015", format="%m/%d/%Y") # American date format
+    as.Date("10/09/15", format="%m/%d/%y") # 2-digit year
+```
+
+- `format` 값에서 `%Y`는 네 자리, `%y`는 두 자리로 연도를 표시한다는 뜻임  
+  
+> 날짜 변수를 문자열 변수로 바꾸려면 `format()` 함수 또는 `as.character()` 함수 등을 사용하면 된다.   
+두 함수 모두 문자형으로 표현할 때 날짜 형태를 위한 `format=` 옵션을 지정할 수 있다.   
+아래 예제를 살펴보면 쉽게 이해할 수 있을 것이다.  
+
+```{r}
+    format(Sys.Date())
+    as.character(Sys.Date())
+    format(Sys.Date(), format="%m/%d/%Y")
+    as.character(Sys.Date(), format="%m/%d/%y")
+    format(Sys.Date(), format="%b/%d/%y")    # %b: Abbreviated month name
+    format(Sys.Date(), format="%B %d, %Y")   # %B: Full month name
+```
+
+> 따로 따로 주어진 연, 월, 일 정보를 하나로 합쳐 하나의 날짜형 데이터를 만드려면 `ISOdate()` 함수를 이용한다.   
+이 함수는 날짜 정보와 시간 정보를 모두 포함한 POSIXct 객체를 리턴하므로 날짜 정보만을 원하는 경우 `as.Date()` 함수를 이용해 날짜형으로 변환하는 절차가 필요하다.   
+2015년 2월 29일과 같이 무효인 날짜값은 결측으로 처리한다.   
+연, 월, 일 정보를 벡터값으로 제공하면 날짜형 벡터를 만들어준다.    
+    
+```{r}
+    ISOdate(2015, 10, 9)   # year, month, day
+    as.Date(ISOdate(2015, 10, 9))
+    ISOdate(2015, 2, 29)   # an invalid date
+    
+    years <- 2011:2015
+    months <- rep(1, 5)
+    days <- c(4, 9, 14, 19, 24, 29)
+    as.Date(ISOdate(years, months, days))
+    as.Date(ISOdate(years, 1, days))     # 재사용 규칙
+```
+
+> 날짜-시간 데이터에서 연, 월, 일, 요일, 시간 등의 세부 정보를 추출하려면 `as.POSIXlt()` 함수를 이용한다.   
+리턴값에서 각 세부 정보를 추출하는 방법은 리스트에서와 같이 `$`를 이용한다.   
+
+```{r}
+    d <- as.Date("2015-10-09")
+    p <- as.POSIXlt(d)
+    p$year
+    p$mon      # Month (0 = January)
+    p$mday     # Day of the month
+```
+
+- Date parts
+      - `$sec`: Seconds (0–61)
+      - `$min`: Minutes (0–59)
+      - `$hour`: Hours (0–23)
+      - `$mday`: Day of the month (1–31)
+      - `$mon`: Month (0–11)
+      - `$year`: Years since 1900
+      - `$wday`: Day of the week (0–6, 0 = Sunday)
+      - `$yday`: Day of the year (0–365)
+      - `$isdst`: Daylight savings time flag
+    
+> 규칙적으로 연속된 날짜값의 열(sequence)를 만들 때도 `seq()` 함수를 이용한다.   
+아래 예제를 살펴보면 쉽게 이해할 수 있을 것이다.  
+
+```{r}
+    s <- as.Date("2015-10-01") 
+    e <- as.Date("2015-10-10") 
+    seq(from=s, to=e, by=1)
+    seq(from=s, by=1, length.out=7)
+    seq(from=s, by="month", length.out=12)
+    seq(from=s, by="3 months", length.out=4)
+    seq(from=s, by="year", length.out=5)
+```
+    
+<br>  
+  
+# C. 데이터 입출력   
+  
+## C.1 데이터 입력  
+  
+* 콘솔에서 직접 자료값을 입력하려면 `scan()` 함수 사용  
+
+    ```{r, eval=FALSE}
+    x <- scan()
+    1: 1
+    2: 2
+    3: 3
+    4:
+    Read 3 items
+    > x
+    [1] 1 2 3
+    ```
+
+* 텍스트 파일의 내용을 읽어들여 백터로 저장할 때에도 `scan()` 함수 사용
+
+    ```{r, eval=FALSE}
+    x <- scan(file="c:/mydata/data_x.txt")
+    y <- matrix(scan("c:/mydata/data_y.txt"), ncol=3, byrow=T)
+    ```
+
+* 직사각형 형태로 정리된 텍스트 파일의 내용을 읽어들여 데이터프레임으로 저장하려면  `read.table()` 함수 사용
+
+    ```{r, eval=FALSE}
+    x <- read.table(file="table.txt", header=T, sep=" ")
+    ```
+
+* csv 파일을 읽어들여 데이터프레임으로 저장하려면 `read.csv()` 함수 사용
+
+    ```{r, eval=FALSE}
+    x <- read.csv(file="table.csv", header=T)
+    ```
+
+* SAS, SPSS 등의 데이터셋을 읽어들이려면 `foreign` 패키지의 함수들을 이용
+
+    - `read.spss()` reads a file stored by the SPSS save or export commands
+    
+    ```{r, eval=F}
+    read.spss("data.sav", to.data.frame=T)
+    ```
+
+    - `read.ssd()` generates a SAS program to convert the ssd contents to SAS transport format and then uses read.xport to obtain a data frame
+
+* 내장 데이터셋(built-in datasets) 
+
+    ```{r eval=-5}
+    library(MASS)
+    data(geyser) 
+
+    # Want the list of built-in datasets contained in the currently loaded packages? Just type data()
+    data()
+    ```
+
+<br>
+
+## C.2 데이터 내보내기
+
+* 콘솔에 출력: `print()` 함수 이용 
+
+    ```{r, eval=F}
+    x <- 1;3
+    print(x)
+    [1] 1 2 3
+    ```
+
+* 벡터를 파일로 내보내기: `write()` 함수
+
+    ```{r, eval=F}
+    x <- seq(from=0, to=1, by=0.1)
+    write(x, file="output.txt")
+    ```
+
+* 데이터프레임, 행렬 등과 같이 표 형태로 저장/작성된 데이터를 텍스트 파일로 내보내기: `write.table()` 함수 이용
+
+    ```{r, eval=F}
+    x <- matrix(1:20, 4, 5)
+    write.table(x, file="table.txt")
+    ```
+
+* 데이터프레임, 행렬 등과 같이 표 형태로 저장/작성된 데이터를 csv 파일로 내보내기: `write.csv()` 함수 이용
+
+    ```{r, eval=F}
+    write.table(faithful, file="faithful.csv")
+    ```
+
+<br>  
+  
+# D. 간단한 도표를 이용한 자료 요약  
+  
+> 자료의 성격에 따라 적절한 도표 작성법을 사용해야 의미있는 정보가 담긴 도표를 작성할 수 있다.  
+  
+<br>  
+  
+## D.1 질적 자료(Qualitative data)의 요약  
+  
+* Bar chart: `barplot()` 함수 이용   
+
+    ```{r}
+    # Beer Preference example
+    beer <- c(3, 4, 1, 1, 3, 4, 3, 3, 1, 3, 2, 1, 2, 
+              1, 2, 3, 2, 3, 1, 1, 1, 1, 4, 3, 1)
+    # (1) Domestic can  (2) Domestic bottle, 
+    # (3) Microbrew     (4) Import
+
+    barplot(table(beer)) 
+    ```
+
+    - `table()` 함수는 도수분포표를 작성
+    - 위 그림... 너무 무성의한 도표임. 약간의 화장을 하면...
+
+    ```{r}
+    barplot(table(beer)/length(beer),                                   # 상대도수 
+            col=c("lightblue", "mistyrose", "lightcyan","cornsilk"),    # 막대 색깔 
+            names.arg=c("Domestic\n can", "Domestic\n bottle", "Microbrew\n", "Import\n"),  # 막대 라벨 
+            ylab="Relative frequency",  
+            main="Beer Preference Survey")
+    ```
+
+    - `names.arg=` 옵션의 `\\n` 는 줄바꿈을 하라는 의미 
+    
+* Pie chart: `pie()` 함수 이용 
+
+    ```{r}
+    beer.counts <- table(beer) # store the table result
+    pie(beer.counts) # first pie -- kind of dull
+    names(beer.counts) <- c("Domestic\n can","Domestic\n bottle", "Microbrew","Import") # give names
+    pie(beer.counts) # prints out names
+    ```
+
+## D.2 양적 자료(Quantitative data)의 요약 
+
+* Stem-and-leaf plot: `stem()` 함수 이용 
+
+    ```{r}
+    scores <- c(2, 3, 16, 23, 14, 12, 4, 13, 2, 0, 0, 0, 6, 28, 31, 14, 4, 8, 2, 5)
+    stem(scores)
+    ```
+
+* Histogram: `hist()` 함수 이용 
+
+    ```{r}
+    x <- rnorm(1000)  # To generate 1,000 random numbers from N(0,1)
+    hist(x, xlab="data")
+    ```
+    
+    - 대체로 난수의 질이 괜찮아보임. 보다 확실히 알아보기 위해 상대도수히스토그램을 target 분포인 N(0,1)의 밀도함수와 비교
+    
+    ```{r}
+    hist(x, probability=T, xlab="data", col="gray", border="white")
+    z <- seq(from=-3, to=3, by=0.01)      # N(0,1)의 밀도함수 곡선을 위한 grid 잡기
+    lines(z, dnorm(z), col=2)             # 빨간 색으로 N(0,1)의 밀도함수 곡선 덧그리기 
+    ```
+
+    - `lines()` 함수는 기존의 plot위에 선을 추가하는 함수임
+
+* Boxplot: `boxplot()` 함수 이용 
+
+    ```{r}
+    growth <- c(75,72,73,61,67,64,62,63) # the size of flies
+    sugar <- c("C","C","C","F","F","F","S","S") # diet
+    fly <- data.frame(growth=growth, sugar=sugar)
+    boxplot(fly$growth)
+    ```
+
+* Scatterplot: `plot()` 함수 이용
+
+    ```{r}
+    # cars: built-in dataset with the speed of cars and the distances taken to stop
+    plot(cars$speed, cars$dist, 
+         col="blue", pch="+", 
+         ylab="Distance taken to stop", xlab="Speed", 
+         ylim=c(-20, 140))
+    ```
+
+    - `with()` 함수를 사용하면 변수명에 `cars$`를 사용하지 않아도 되기 때문에 보다 깔끔한 코딩 가능 
+
+    ```{r}
+    with(cars, plot(speed, dist, 
+                    col="blue", pch=20, 
+                    ylab="Distance taken to stop", xlab="Speed", 
+                    ylim=c(-20, 140)))
+    ```
+    
+<br>  
+  
+# E. 프로그래밍   
+  
+> 이 절에서는 반복적인 작업을 단순화하거나 코드를 보다 읽기 좋도록 하기 위해 R 프로그래밍에서 사용하는 제어문들을 익힌다.   
+  
+<br>  
+  
+## E.1 조건문  
+
+* 'if-else'를 사용한 조건문 
+
+    ```{r}
+    x <- 10
+    if (x < 3) print("x < 3") else print("x >= 3")
+    ```
+    
+* `ifelse()` 함수
+
+    ```{r}
+    y <- -3:3
+    z <- ifelse(y < 0, -1, 1) 
+    cbind(y, z)
+    ```
+    
+* Commands can be grouped by braces.
+
+    ```{r}
+    x <- 4
+    if ( x < 3 ) {
+      print("x<3")
+      z <- "M"
+    } else {
+        print("x>3")
+        z <- "F"
+    }
+    ```
+
+<br>  
+  
+## E.2 반복문   
+  
+> 루프(loop)란 반복적으로 실행되는 명령 사이클을 의미한다.   
+R에서 루프를 사용할 때 대표적 방법은 `for` 문을 사용하는 방법과 `while`문을 사용하는 방법이 있다.   
+  
+* for문: `for(i in 벡터){명령어...}` 와 같은 형태로 사용.   
+벡터 내 모든 성분에 대해 루프를 돌림  
+    - 아래 코드는 for문을 사용해 1부터 10까지의 합을 계산하고 루프를 돌리는 동안 부분합을 화면에 출력하는 예이다.  
+
+    ```{r}
+    n <- 10
+    x <- 1:n
+    sum.so.far <- 0
+    for ( i in 1:n ) {
+      sum.so.far <- sum.so.far + x[i]
+      print(sum.so.far)
+    }
+    sum.so.far   
+    ```
+
+* while문: `while(조건){명령어...}` 와 같은 형태로 사용.   
+반복 횟수를 미리 알 수 없고 대신 루프를 지속할 수 있는 조건만 줄 수 있을 때 사용  
+    - 아래 코드는 1부터 시작해 자연수를 누적 합을 구하되 누적 합이 1,000 이내인 동안만 루프를 돌리고 1,000을 초과하면 루프를 중지하는 예임   
+
+    ```{r}
+    n <- 0
+    sum.so.far <- 0
+    while ( sum.so.far <= 1000 ) {
+      n <- n+1
+      sum.so.far <- sum.so.far + n
+    }
+    print(c(n, sum.so.far))
+    sum(1:45)
+    ```
+
+* 루프를 강제로 빠져나오게 하려면 `break`문 사용
+    - 아래 코드는 1부터 시작해 자연수를 누적 합을 구하되 누적 합이 1,000 이내인 동안만 루프를 돌리는 예임 
+
+    ```{r}
+    n <- 0
+    sum.so.far <- 0
+    while (1) {          # 조건문 자리에 1(TRUE와 동일한 효과)이 있으므로 무한루프 
+      if(sum.so.far > 1000) break
+      n <- n+1
+      sum.so.far <- sum.so.far + n
+    }
+    print(c(n, sum.so.far))
+    ```
+    
+* 가능하면 루프는 사용하지 않는 것이 좋음
+    - 벡터 연산 혹은 행렬 연산으로 해결할 수 있는 작업은 루프를 사용하지 않아야 함
+    - 계산 시간을 절약하고 코드의 가독성을 향상시키기 위함임
+    - 아래 코드는 1부터 100,000,000까지의 자연수로 이루어진 벡터를 다른 이름의 벡터로 복사하는 예임. 시스템 시간을 비교하기 바람.
+
+    ```{r}
+    n <- 100000000
+    x <- 1:n
+    system.time(y <- x)
+    system.time(for (i in 1:n) y[i] <- x[i])
+    ```
+
+<br>  
+  
+## E.3 나만의 R함수 만들기  
+  
+> 함수(function)란 특정한 작업을 해 결과물을 객체로 되돌려주는 코드 덩어리를 의미한다.   
+R의 여러 패키지에서 제공하는 함수를 이용하는 것으로 충분하지 않아서 직접 새로운 함수를 만들어 사용해야 하는 경우를 종종 만나게 된다.  
+  
+* 함수의 정의 방법: `함수이름 <- function(함수 인자...) {명령어들...}`  
+    - 아래 코드는 자료의 평균과 표준편차를 계산해 리턴하고 자료의 분포를 요약한 상자그림 및 히스토그램을 작성하는 함수의 예이다.  
+
+    ```{r}
+    my.stat <- function(x)
+    {
+      m <- mean(x)
+      s <- sd(x)
+      res <- list(m=m, s=s)
+
+      par(mfrow=c(1, 2))
+      boxplot(x, main="Boxplot", horizontal=T)
+      hist(x, prob=T, col="skyblue", border="white", main="Histrogram", xlab="data")
+      
+      return(res)
+    }
+    ```
+
+    - 함수를 정의하는 `{}` 안쪽에서 정의된 변수의 이름은 함수 정의 내에서만 유효한 로컬 변수임에 유의 
+          + 위의 예에서 사용한 `m`, `s`, `res` 등은 함수 정의 내에서만 유효한 로컬 변수 
+    - 위에서 작성한 새로운 함수를 호출해 사용해 보자.
+    
+    ```{r}
+    dat <- rnorm(1000, mean=3, sd=1)
+    my.stat(x=dat)
+    ```
+
+<a href="#Title">back to Top</a>

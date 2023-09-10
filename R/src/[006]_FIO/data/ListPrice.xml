@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<listprice>
+  <car>
+    <model>Renault</model>
+    <price>24000</price>
+  </car>
+  <car>
+    <model>Picasso</model>
+    <price>17000</price>
+  </car>
+  <car>
+    <model>Peugeot</model>
+    <price>23000</price>
+  </car>
+  <car>
+    <model>Focus</model>
+    <price>15000</price>
+  </car>
+  <car>
+    <model>Fiesta</model>
+    <price>12000</price>
+  </car>
+</listprice> 
